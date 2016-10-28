@@ -8,23 +8,49 @@
 
 import Foundation
 import CoreLocation
+import OAuthSwift
 
 class IGImage {
     
 }
 
 class InstagramAPI {
-    private let client : String
-    private let secret : String
+    private let oauth : OAuth2Swift
+    private var authToken : String?
+    private let scope : String
     
-    required init(client: String, secret: String) {
-        // Note: If we were worried about hackers, this information should be encrypted in the source.
-        self.client = client
-        self.secret = secret
+    public var viewController : UIViewController? {
+        didSet {
+            if let vc = self.viewController {
+                oauth.authorizeURLHandler = SafariURLHandler(viewController: vc, oauthSwift: oauth)
+            }
+        }
+    }
+    
+    required init(client: String, secret: String, scope: String) {
+        self.oauth = OAuth2Swift(
+            consumerKey:    client,
+            consumerSecret: secret,
+            authorizeUrl:   "https://api.instagram.com/oauth/authorize",
+            responseType:   "token"
+        )
+        self.scope = scope
     }
     
     private func accessToken(completion: (String?, Error?) -> Void) {
-        
+        if let authToken = self.authToken { completion(authToken,nil) }
+        let success : OAuthSwift.TokenSuccessHandler = { credential, response, parameters in
+            print(credential.oauthToken)
+        }
+        let failure : OAuthSwift.FailureHandler = { error in
+            print(error.localizedDescription)
+        }
+        _ = oauth.authorize(
+            withCallbackURL: URL(string: "oauth-swift://oauth-callback/instagram")!,
+            scope: "likes+comments", state:"INSTAGRAM",
+            success: success,
+            failure: failure
+        )
     }
     
     public func photosAtLocation(location: CLLocation, completion: @escaping ([IGImage]?, Error?) -> Void) {

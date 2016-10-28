@@ -6,4 +6,5 @@ target 'PhotoPond' do
   use_frameworks!
 
   pod 'CWStatusBarNotification', '~> 2.3.5'
+  pod 'OAuthSwift', '~> 1.0.0'
 end
