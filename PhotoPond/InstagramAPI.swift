@@ -18,6 +18,7 @@ class InstagramAPI {
     private let oauth : OAuth2Swift
     private var authToken : String?
     private let scope : String
+    private let callbackURL : URL
     
     public var viewController : UIViewController? {
         didSet {
@@ -27,7 +28,7 @@ class InstagramAPI {
         }
     }
     
-    required init(client: String, secret: String, scope: String) {
+    required init(client: String, secret: String, scope: String, callbackURL: URL) {
         self.oauth = OAuth2Swift(
             consumerKey:    client,
             consumerSecret: secret,
@@ -35,6 +36,7 @@ class InstagramAPI {
             responseType:   "token"
         )
         self.scope = scope
+        self.callbackURL = callbackURL
     }
     
     private func accessToken(completion: (String?, Error?) -> Void) {
@@ -46,7 +48,7 @@ class InstagramAPI {
             print(error.localizedDescription)
         }
         _ = oauth.authorize(
-            withCallbackURL: URL(string: "oauth-swift://oauth-callback/instagram")!,
+            withCallbackURL: callbackURL,
             scope: "likes+comments", state:"INSTAGRAM",
             success: success,
             failure: failure

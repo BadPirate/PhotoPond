@@ -12,12 +12,12 @@ import CoreLocation
 
 class PondVC : UIViewController {
     override func viewDidLoad() {
-        scan()
     }
     
-    func scan() {
+    @IBAction func scan() {
         // Get a batch of photos
         let location = CLLocation(latitude: 37.4041091, longitude: -122.0098641) // TODO: User's actual location
+        api.viewController = self
         api.photosAtLocation(location: location, completion: { images, error in
             print(images ?? "No images")
         })

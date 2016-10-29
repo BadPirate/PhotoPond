@@ -19,6 +19,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         print(url)
         return true
     }
+    
+    func application(_ application: UIApplication, continue userActivity: NSUserActivity, restorationHandler: @escaping ([Any]?) -> Void) -> Bool {
+        print(userActivity)
+        return true
+    }
 }
 
-let api = InstagramAPI(client: "d761949dd0de4f0d84fbae894401c6f7", secret: "d67120f3a24641fbb8d5561f6ede5145", scope: "likes")
+let api = InstagramAPI(client: "d761949dd0de4f0d84fbae894401c6f7", secret: "d67120f3a24641fbb8d5561f6ede5145", scope: "likes", callbackURL: URL(string:  "https://photopond.herokuapp.com/oauth")!)

@@ -27,6 +27,7 @@
 		B43C668D1DC3D11E00A97B3C /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B43C66951DC3D87B00A97B3C /* InstagramAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstagramAPI.swift; sourceTree = "<group>"; };
 		B43C66971DC3DB7000A97B3C /* PondVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PondVC.swift; sourceTree = "<group>"; };
+		B43C66991DC4140B00A97B3C /* PhotoPond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoPond.entitlements; sourceTree = "<group>"; };
 		F5A2E7E4ED12761D4A70E20E /* Pods-PhotoPond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoPond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoPond/Pods-PhotoPond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -71,6 +72,7 @@
 		B43C66801DC3D11E00A97B3C /* PhotoPond */ = {
 			isa = PBXGroup;
 			children = (
+				B43C66991DC4140B00A97B3C /* PhotoPond.entitlements */,
 				B43C66811DC3D11E00A97B3C /* AppDelegate.swift */,
 				B43C66851DC3D11E00A97B3C /* Main.storyboard */,
 				B43C66881DC3D11E00A97B3C /* Assets.xcassets */,
@@ -129,6 +131,11 @@
 						DevelopmentTeam = GZ2N47M83H;
 						LastSwiftMigration = 0810;
 						ProvisioningStyle = Automatic;
+						SystemCapabilities = {
+							com.apple.SafariKeychain = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -345,8 +352,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PhotoPond/PhotoPond.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = GZ2N47M83H;
 				INFOPLIST_FILE = PhotoPond/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.logichigh.PhotoPond;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -360,8 +370,11 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = PhotoPond/PhotoPond.entitlements;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = GZ2N47M83H;
 				INFOPLIST_FILE = PhotoPond/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.logichigh.PhotoPond;
 				PRODUCT_NAME = "$(TARGET_NAME)";
