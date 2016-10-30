@@ -6,12 +6,46 @@
 //  Copyright © 2016 Logic High. All rights reserved.
 //
 
-import Foundation
+import UIKit
 import CoreLocation
 import OAuthSwift
 
 class IGImage {
+    private var dictionary : Dictionary<String,AnyObject>
+    private weak var api : InstagramAPI?
+    required init(dictionary: Dictionary<String,AnyObject>, api: InstagramAPI) {
+        self.dictionary = dictionary
+        self.api = api
+    }
     
+    public var thumbnailURL : URL? {
+        if let url = thumbnail?["url"] as? String {
+            return URL(string: url)
+        }
+        return nil
+    }
+    
+    public var thumbnailWidth : Int {
+        if let width = thumbnail?["width"] as? Int {
+            return width
+        }
+        return 0
+    }
+    
+    public var thumbnailHeight : Int {
+        if let height = thumbnail?["height"] as? Int {
+            return height
+        }
+        return 0
+    }
+    
+    private var thumbnail : Dictionary<String,AnyObject>? {
+        return images?["thumbnail"]
+    }
+    
+    private var images : Dictionary<String,Dictionary<String,AnyObject>>? {
+        return dictionary["images"] as? Dictionary<String,Dictionary<String,AnyObject>>
+    }
 }
 
 class InstagramAPI {
@@ -20,13 +54,7 @@ class InstagramAPI {
     private let scope : String
     private let callbackURL : URL
     
-    public var viewController : UIViewController? {
-        didSet {
-            if let vc = self.viewController {
-                oauth.authorizeURLHandler = SafariURLHandler(viewController: vc, oauthSwift: oauth)
-            }
-        }
-    }
+    public var viewController : UIViewController?
     
     required init(client: String, secret: String, scope: String, callbackURL: URL) {
         self.oauth = OAuth2Swift(
@@ -39,20 +67,30 @@ class InstagramAPI {
         self.callbackURL = callbackURL
     }
     
-    private func accessToken(completion: (String?, Error?) -> Void) {
+    private func accessToken(completion: @escaping (String?, Error?) -> Void) {
         if let authToken = self.authToken { completion(authToken,nil) }
         let success : OAuthSwift.TokenSuccessHandler = { credential, response, parameters in
-            print(credential.oauthToken)
+            self.authToken = credential.oauthToken
+            print(self.authToken!)
+            completion(self.authToken, nil)
         }
         let failure : OAuthSwift.FailureHandler = { error in
-            print(error.localizedDescription)
+            completion(nil,error)
         }
-        _ = oauth.authorize(
-            withCallbackURL: callbackURL,
-            scope: "likes+comments", state:"INSTAGRAM",
-            success: success,
-            failure: failure
-        )
+        let oauthVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "oauth") as! OAuthVC
+        oauthVC.host = "photopond.herokuapp.com"
+        oauthVC.success = { request in
+            OAuthSwift.handle(url: request.url!)
+        }
+        oauth.authorizeURLHandler = oauthVC
+        viewController!.present(oauthVC, animated: true, completion: {
+            _ = self.oauth.authorize(
+                withCallbackURL: self.callbackURL,
+                scope: self.scope, state:"INSTAGRAM",
+                success: success,
+                failure: failure
+            )
+        })
     }
     
     public func photosAtLocation(location: CLLocation, completion: @escaping ([IGImage]?, Error?) -> Void) {
@@ -68,14 +106,31 @@ class InstagramAPI {
             let accessToken = "4095606396.e029fea.ee3dc1ee12394681874e78a9007fd126"
             
             // let accessToken = accessToken!
+            self.sendRequest(request: "https://api.instagram.com/v1/media/search?lat=\(location.coordinate.latitude)&lng=\(location.coordinate.longitude)&distance=5000&access_token=\(accessToken)", completion: { (result, error) in
                 if let error = error { completion(nil,error); return }
-                // TODO: Parse out the images
+                if let data = result!["data"] as? [Dictionary<String,AnyObject>] {
+                    var images = [IGImage]()
+                    for imageDictionary in data {
+                        images.append(IGImage(dictionary: imageDictionary, api: self))
+                    }
+                    completion(images,nil)
+                    return
+                }
             })
             
         }
     }
     
-    private func sendRequest(request: String, completion: (Dictionary<String,AnyObject>?, Error?) -> Void) {
-        
+    private func sendRequest(request: String, completion: @escaping (Dictionary<String,AnyObject>?, Error?) -> Void) {
+        let task = URLSession.shared.dataTask(with: URL(string: request)!, completionHandler: { data, response, error in
+            if let error = error {
+                completion(nil, error)
+                return
+            }
+            let object = try! JSONSerialization.jsonObject(with: data!, options: []) // TODO: Should catch
+            let dictionary = object as! Dictionary<String,AnyObject> // TODO: Handle other object types?
+            completion(dictionary, nil)
+        })
+        task.resume()
     }
 }

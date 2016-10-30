@@ -9,17 +9,105 @@
 import Foundation
 import UIKit
 import CoreLocation
+import CoreFoundation
+
+class LilyView : UIImageView {
+    public var photo : IGImage?
+}
 
 class PondVC : UIViewController {
+    let collider = UICollisionBehavior()
+    let gravity = UIGravityBehavior()
+    let dynamic = UIDynamicItemBehavior()
+    var appeared = false
+    var animator : UIDynamicAnimator?
+    
     override func viewDidLoad() {
+        let animator = UIDynamicAnimator(referenceView: view)
+        animator.addBehavior(collider)
+        collider.translatesReferenceBoundsIntoBoundary = true
+        
+        gravity.gravityDirection = CGVector(dx: 0, dy: 0.8)
+        animator.addBehavior(gravity);
+        
+        dynamic.elasticity = 1.0
+        animator.addBehavior(dynamic)
+        
+        self.animator = animator
     }
     
-    @IBAction func scan() {
+    override func viewDidAppear(_ animated: Bool) {
+        if appeared { return }
+        appeared = true
+        scan()
+    }
+    
+    func scan() {
         // Get a batch of photos
-        let location = CLLocation(latitude: 37.4041091, longitude: -122.0098641) // TODO: User's actual location
+        let location = CLLocation(latitude: 48.8583736, longitude: 2.2922926) // TODO: User's actual location, currently Eiffel Tower
         api.viewController = self
         api.photosAtLocation(location: location, completion: { images, error in
-            print(images ?? "No images")
+            if let error = error {
+                print(error) // TODO: Nice alert or better error handling here.
+                return
+            }
+            for image in images! {
+                self.addPhoto(photo: image)
+            }
         })
     }
+    
+    func addPhoto(photo: IGImage) {
+        guard let url = photo.thumbnailURL else { print("No photo url - \(photo)"); return }
+        URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
+            if error != nil { return }
+            if let data = data, let image = UIImage(data: data) {
+                DispatchQueue.main.async {
+                    self.addImage(image: image, photo: photo)
+                }
+            }
+        }).resume()
+    }
+    
+    var lilySize : Int {
+        let coverage : Double = 0.7
+        let area : Double = Double(self.view.frame.width * self.view.frame.height)
+        return Int(floor(sqrt(area/20)*coverage))
+    }
+    
+    override func touchesMoved(_ touches: Set<UITouch>, with event: UIEvent?) {
+     
+        if let touch = touches.first, let touchView = touch.view as? LilyView {
+            let currentLocation = touchView.center
+            let location = touch.location(in: self.view)
+            dynamic.addLinearVelocity(CGPoint(x: location.x - currentLocation.x, y: location.y - currentLocation.y), for: touchView)
+        }
+    }
+    
+    func addImage(image : UIImage, photo : IGImage) {
+        let lily = LilyView(image: image)
+        lily.photo = photo
+        let size = lilySize
+        lily.frame.size = CGSize(width: size, height: size)
+        let randx = Int(arc4random_uniform(UInt32(self.view.frame.size.width-CGFloat(size)))+UInt32(size/2))
+        let randy = Int(arc4random_uniform(UInt32(self.view.frame.size.height-CGFloat(size)))+UInt32(size/2))
+        lily.center = CGPoint(x: randx, y: randy)
+        lily.isUserInteractionEnabled = true
+        self.view.addSubview(lily)
+        collider.addItem(lily)
+        dynamic.addItem(lily)
+        let randvx = Int(arc4random_uniform(30))-15
+        let randvy = Int(arc4random_uniform(30))-15
+        dynamic.addLinearVelocity(CGPoint(x: randvx, y: randvy), for: lily)
+        let tap = UITapGestureRecognizer(target: self, action: #selector(PondVC.preview(tap:)))
+        lily.addGestureRecognizer(tap)
+    }
+    
+    func preview(tap: UITapGestureRecognizer) {
+//        if let lily = tap.view as? LilyView {
+//            let previewVC = UIDocumentInteractionController(url: lily.)
+//        }
+    }
 }
+
+
