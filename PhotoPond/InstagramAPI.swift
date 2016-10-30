@@ -61,8 +61,13 @@ class InstagramAPI {
                 completion(nil,error)
                 return
             }
-            let accessToken = accessToken!
-            sendRequest(request: "https://api.instagram.com/v1/media/search?lat=48.858844&lng=2.294351&access_token="+accessToken, completion: { (result, error) in
+            
+            /*  Access Token discovery works, but my App is Sandboxed, and there are no pictures on any of my sandboxed accounts near any location that is useful.  Additionally, accessing public data is not a valid use case for the Instagram API (WTF?) so you will never be able to unsandbox an app with this functionality.  Fortunately there is a workaround: http://services.chrisriversdesign.com/instagram-token/ -- Has an already approved, non-sandboxed API
+                that provides access tokens.   For now, I'm using one of those. */
+            
+            let accessToken = "4095606396.e029fea.ee3dc1ee12394681874e78a9007fd126"
+            
+            // let accessToken = accessToken!
                 if let error = error { completion(nil,error); return }
                 // TODO: Parse out the images
             })
