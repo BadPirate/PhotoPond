@@ -13,6 +13,7 @@
 		B43C668C1DC3D11E00A97B3C /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B43C668A1DC3D11E00A97B3C /* LaunchScreen.storyboard */; };
 		B43C66961DC3D87B00A97B3C /* InstagramAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C66951DC3D87B00A97B3C /* InstagramAPI.swift */; };
 		B43C66981DC3DB7000A97B3C /* PondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C66971DC3DB7000A97B3C /* PondVC.swift */; };
+		B43C669B1DC4629500A97B3C /* OAuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C669A1DC4629500A97B3C /* OAuthVC.swift */; };
 		C74CFE527FA0DC2D96D1A583 /* Pods_PhotoPond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86007DC874AFDA897D08506F /* Pods_PhotoPond.framework */; };
 /* End PBXBuildFile section */
 
@@ -28,6 +29,7 @@
 		B43C66951DC3D87B00A97B3C /* InstagramAPI.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InstagramAPI.swift; sourceTree = "<group>"; };
 		B43C66971DC3DB7000A97B3C /* PondVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PondVC.swift; sourceTree = "<group>"; };
 		B43C66991DC4140B00A97B3C /* PhotoPond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoPond.entitlements; sourceTree = "<group>"; };
+		B43C669A1DC4629500A97B3C /* OAuthVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthVC.swift; sourceTree = "<group>"; };
 		F5A2E7E4ED12761D4A70E20E /* Pods-PhotoPond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoPond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoPond/Pods-PhotoPond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -80,6 +82,7 @@
 				B43C668D1DC3D11E00A97B3C /* Info.plist */,
 				B43C66951DC3D87B00A97B3C /* InstagramAPI.swift */,
 				B43C66971DC3DB7000A97B3C /* PondVC.swift */,
+				B43C669A1DC4629500A97B3C /* OAuthVC.swift */,
 			);
 			path = PhotoPond;
 			sourceTree = "<group>";
@@ -133,7 +136,7 @@
 						ProvisioningStyle = Automatic;
 						SystemCapabilities = {
 							com.apple.SafariKeychain = {
-								enabled = 1;
+								enabled = 0;
 							};
 						};
 					};
@@ -225,6 +228,7 @@
 			files = (
 				B43C66981DC3DB7000A97B3C /* PondVC.swift in Sources */,
 				B43C66821DC3D11E00A97B3C /* AppDelegate.swift in Sources */,
+				B43C669B1DC4629500A97B3C /* OAuthVC.swift in Sources */,
 				B43C66961DC3D87B00A97B3C /* InstagramAPI.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -352,7 +356,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PhotoPond/PhotoPond.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = GZ2N47M83H;
 				INFOPLIST_FILE = PhotoPond/Info.plist;
@@ -370,7 +373,6 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CODE_SIGN_ENTITLEMENTS = PhotoPond/PhotoPond.entitlements;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = GZ2N47M83H;
 				INFOPLIST_FILE = PhotoPond/Info.plist;
