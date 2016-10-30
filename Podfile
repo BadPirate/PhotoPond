@@ -5,6 +5,6 @@ target 'PhotoPond' do
   # Comment this line if you're not using Swift and don't want to use dynamic frameworks
   use_frameworks!
 
-  pod 'OAuthSwift', '~> 1.0.0'
   pod 'CWStatusBarNotification', '~> 2.3.5'
+  pod 'OAuthSwift', '~> 1.0.0'
 end
