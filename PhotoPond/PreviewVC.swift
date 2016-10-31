@@ -28,19 +28,34 @@ class PreviewVC : UIViewController {
     
     func updatePhoto() {
         if let photo = photo {
-            likeButton?.setImage(UIImage(named: photo.liked ? "777-thumbs-up-selected" : "777-thumbs-up"), for: .normal)
             liked = photo.liked
+            DispatchQueue.main.async {
+                self.likeButton?.setImage(UIImage(named: photo.liked ? "777-thumbs-up-selected" : "777-thumbs-up"), for: .normal)
+            }
         }
     }
     
     var photo : IGImage? {
         didSet {
+            if let oldValue = oldValue {
+                oldValue.removeObserver(self, forKeyPath: "liked")
+            }
+            if let photo = photo {
+                photo.addObserver(self, forKeyPath: "liked", options: [.initial, .new], context: nil)
+            }
+        }
+    }
+    
+    override func observeValue(forKeyPath keyPath: String?, of object: Any?, change: [NSKeyValueChangeKey : Any]?, context: UnsafeMutableRawPointer?) {
+        if keyPath == "liked" {
             updatePhoto()
         }
     }
     
     @IBAction func like() {
         if liked { return }
+        liked = true
+        photo?.like()
     }
     
     override func viewDidLoad() {
@@ -50,7 +65,12 @@ class PreviewVC : UIViewController {
         updatePhoto()
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        api.viewController = self
+    }
+    
     func dismiss(sender: UITapGestureRecognizer) {
+        photo = nil // Clear KVO
         dismiss(animated: true, completion: nil)
     }
 }

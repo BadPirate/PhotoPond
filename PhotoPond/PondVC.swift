@@ -55,6 +55,7 @@ class PondVC : UIViewController {
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        api.viewController = self
         if appeared { return }
         appeared = true
         scan()
@@ -63,7 +64,6 @@ class PondVC : UIViewController {
     func scan() {
         // Get a batch of photos
         let location = CLLocation(latitude: 48.8583736, longitude: 2.2922926) // TODO: User's actual location, currently Eiffel Tower
-        api.viewController = self
         api.photosAtLocation(location: location, completion: { images, error in
             if let error = error {
                 print(error) // TODO: Nice alert or better error handling here.
@@ -74,6 +74,7 @@ class PondVC : UIViewController {
             }
         })
     }
+    
     
     func addPhoto(photo: IGImage) {
         guard let url = photo.thumbnailURL else { print("No photo url - \(photo)"); return }
@@ -88,7 +89,7 @@ class PondVC : UIViewController {
     }
     
     var lilySize : Int {
-        let coverage : Double = 0.7
+        let coverage : Double = 0.6
         let area : Double = Double(self.view.frame.width * self.view.frame.height)
         return Int(floor(sqrt(area/20)*coverage))
     }

@@ -14,8 +14,10 @@ class OAuthVC : UIViewController, OAuthSwiftURLHandlerType, UIWebViewDelegate {
     
     public var host : String?
     public var success : ((URLRequest) -> Void)?
+    public var presentVC : UIViewController?
     
     func handle(_ url: URL) {
+        view.tag = 1 // Make sure our view and thus webview is loaded.
         webView!.loadRequest(URLRequest(url: url))
     }
     
@@ -26,5 +28,10 @@ class OAuthVC : UIViewController, OAuthSwiftURLHandlerType, UIWebViewDelegate {
             return false
         }
         return true
+    }
+    
+    func webViewDidFinishLoad(_ webView: UIWebView) {
+        // If we stop on a page before the redirect closes us, user interaction is required.  Present.
+        presentVC?.present(self, animated: true, completion: nil)
     }
 }
