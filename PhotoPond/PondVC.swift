@@ -78,10 +78,13 @@ class PondVC : UIViewController {
     
     func addPhoto(photo: IGImage) {
         guard let url = photo.thumbnailURL else { print("No photo url - \(photo)"); return }
+        let status = "Planting Lilies"
+        started(status: status)
         URLSession.shared.dataTask(with: url, completionHandler: { data, _, error in
+            defer { finished(status: status); }
             if error != nil { return }
             if let data = data, let image = UIImage(data: data) {
-                DispatchQueue.main.async {
+                DispatchQueue.main.sync {
                     self.addImage(image: image, photo: photo)
                 }
             }

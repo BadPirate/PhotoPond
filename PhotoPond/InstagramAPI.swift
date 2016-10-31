@@ -113,15 +113,19 @@ class InstagramAPI {
     
     private func accessToken(completion: @escaping (String?, Error?) -> Void) {
         if let authToken = self.authToken { completion(authToken,nil); return }
+        let status = "Authenticating"
+        started(status: status)
         let success : OAuthSwift.TokenSuccessHandler = { credential, response, parameters in
             print("Retrieved sandbox auth token - " + credential.oauthToken)
 
             self.authToken = credential.oauthToken
 
             completion(self.authToken, nil)
+            finished(status: status)
         }
         let failure : OAuthSwift.FailureHandler = { error in
             completion(nil,error)
+            finished(status: status)
         }
         
         oauthVC.host = "photopond.herokuapp.com"
@@ -150,7 +154,10 @@ class InstagramAPI {
             
             let accessToken : String? = "4095606396.e029fea.083903d10f484e8a8cca56a70934790a"
             
+            let status = "Getting photos"
+            started(status: status)
             self.getRequest(request: "https://api.instagram.com/v1/media/search?lat=\(location.coordinate.latitude)&lng=\(location.coordinate.longitude)&distance=5000&access_token=\(accessToken!)", completion: { (result, error) in
+                defer { finished(status: status) }
                 if let error = error { completion(nil,error); return }
                 if let data = result!["data"] as? [Dictionary<String,AnyObject>] {
                     var images = [IGImage]()
