@@ -12,7 +12,6 @@ import OAuthSwift
 class OAuthVC : UIViewController, OAuthSwiftURLHandlerType, UIWebViewDelegate {
     @IBOutlet var webView : UIWebView?
     
-    public var host : String?
     public var success : ((URLRequest) -> Void)?
     public var presentVC : UIViewController?
     
@@ -22,7 +21,7 @@ class OAuthVC : UIViewController, OAuthSwiftURLHandlerType, UIWebViewDelegate {
     }
     
     func webView(_ webView: UIWebView, shouldStartLoadWith request: URLRequest, navigationType: UIWebViewNavigationType) -> Bool {
-        if request.url?.host?.contains(host!) == true {
+        if request.url?.fragment?.contains("access_token") == true {
             success!(request)
             dismiss(animated: true, completion: nil)
             return false

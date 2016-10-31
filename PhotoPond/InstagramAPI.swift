@@ -128,7 +128,6 @@ class InstagramAPI {
             finished(status: status)
         }
         
-        oauthVC.host = "photopond.herokuapp.com"
         oauthVC.success = { request in
             OAuthSwift.handle(url: request.url!)
         }
