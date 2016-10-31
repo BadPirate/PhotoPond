@@ -14,6 +14,7 @@
 		B43C66961DC3D87B00A97B3C /* InstagramAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C66951DC3D87B00A97B3C /* InstagramAPI.swift */; };
 		B43C66981DC3DB7000A97B3C /* PondVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C66971DC3DB7000A97B3C /* PondVC.swift */; };
 		B43C669B1DC4629500A97B3C /* OAuthVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C669A1DC4629500A97B3C /* OAuthVC.swift */; };
+		B43C669D1DC6B08A00A97B3C /* PreviewVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B43C669C1DC6B08A00A97B3C /* PreviewVC.swift */; };
 		C74CFE527FA0DC2D96D1A583 /* Pods_PhotoPond.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86007DC874AFDA897D08506F /* Pods_PhotoPond.framework */; };
 /* End PBXBuildFile section */
 
@@ -30,6 +31,7 @@
 		B43C66971DC3DB7000A97B3C /* PondVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PondVC.swift; sourceTree = "<group>"; };
 		B43C66991DC4140B00A97B3C /* PhotoPond.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = PhotoPond.entitlements; sourceTree = "<group>"; };
 		B43C669A1DC4629500A97B3C /* OAuthVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OAuthVC.swift; sourceTree = "<group>"; };
+		B43C669C1DC6B08A00A97B3C /* PreviewVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PreviewVC.swift; sourceTree = "<group>"; };
 		F5A2E7E4ED12761D4A70E20E /* Pods-PhotoPond.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-PhotoPond.debug.xcconfig"; path = "Pods/Target Support Files/Pods-PhotoPond/Pods-PhotoPond.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -83,6 +85,7 @@
 				B43C66951DC3D87B00A97B3C /* InstagramAPI.swift */,
 				B43C66971DC3DB7000A97B3C /* PondVC.swift */,
 				B43C669A1DC4629500A97B3C /* OAuthVC.swift */,
+				B43C669C1DC6B08A00A97B3C /* PreviewVC.swift */,
 			);
 			path = PhotoPond;
 			sourceTree = "<group>";
@@ -228,6 +231,7 @@
 			files = (
 				B43C66981DC3DB7000A97B3C /* PondVC.swift in Sources */,
 				B43C66821DC3D11E00A97B3C /* AppDelegate.swift in Sources */,
+				B43C669D1DC6B08A00A97B3C /* PreviewVC.swift in Sources */,
 				B43C669B1DC4629500A97B3C /* OAuthVC.swift in Sources */,
 				B43C66961DC3D87B00A97B3C /* InstagramAPI.swift in Sources */,
 			);

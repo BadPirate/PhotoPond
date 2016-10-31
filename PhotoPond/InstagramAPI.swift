@@ -18,8 +18,19 @@ class IGImage {
         self.api = api
     }
     
+    public var liked : Bool {
+        return (dictionary["user_has_liked"] as? Bool) ?? false
+    }
+    
     public var thumbnailURL : URL? {
         if let url = thumbnail?["url"] as? String {
+            return URL(string: url)
+        }
+        return nil
+    }
+    
+    public var standardURL : URL? {
+        if let url = standard?["url"] as? String {
             return URL(string: url)
         }
         return nil
@@ -37,6 +48,10 @@ class IGImage {
             return height
         }
         return 0
+    }
+    
+    private var standard : Dictionary<String,AnyObject>? {
+        return images?["standard_resolution"]
     }
     
     private var thumbnail : Dictionary<String,AnyObject>? {

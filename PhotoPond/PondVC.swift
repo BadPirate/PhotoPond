@@ -13,6 +13,23 @@ import CoreFoundation
 
 class LilyView : UIImageView {
     public var photo : IGImage?
+    public var loading : Bool = false {
+        didSet {
+            if loading {
+                activity = UIActivityIndicatorView(activityIndicatorStyle: .gray)
+                activity!.center = CGPoint(x: self.frame.size.width / 2, y: self.frame.size.height / 2)
+                self.addSubview(activity!)
+                activity!.startAnimating()
+            } else {
+                if let activity = activity {
+                    activity.removeFromSuperview()
+                    self.activity = nil
+                }
+            }
+        }
+    }
+    
+    private var activity : UIActivityIndicatorView?
 }
 
 class PondVC : UIViewController {
@@ -21,6 +38,7 @@ class PondVC : UIViewController {
     let dynamic = UIDynamicItemBehavior()
     var appeared = false
     var animator : UIDynamicAnimator?
+    var previewing = false
     
     override func viewDidLoad() {
         let animator = UIDynamicAnimator(referenceView: view)
@@ -104,9 +122,29 @@ class PondVC : UIViewController {
     }
     
     func preview(tap: UITapGestureRecognizer) {
-//        if let lily = tap.view as? LilyView {
-//            let previewVC = UIDocumentInteractionController(url: lily.)
-//        }
+        if previewing { return }
+        if let lily = tap.view as? LilyView, let photo = lily.photo, let url = photo.standardURL {
+            previewing = true
+            lily.loading = true
+            URLSession.shared.downloadTask(with: url, completionHandler: { url, _, _ in
+                defer { self.previewing = false; }
+                guard let url = url else { return }
+                
+                // Rename file before using, otherwise it gets deleted before loading.
+                let destination = NSURL.fileURL(withPath: NSTemporaryDirectory()).appendingPathComponent(NSUUID().uuidString)
+                try! FileManager.default.moveItem(at: url, to: destination)
+                
+                if let image = UIImage(contentsOfFile: destination.path) {
+                    DispatchQueue.main.sync {
+                        let previewVC = UIStoryboard(name: "Main", bundle: nil).instantiateViewController(withIdentifier: "preview") as! PreviewVC
+                        previewVC.image = image
+                        previewVC.photo = photo
+                        self.present(previewVC, animated: true, completion: nil)
+                        lily.loading = false
+                    }
+                }
+            }).resume()
+        }
     }
 }
 
