@@ -21,7 +21,7 @@
                         <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView userInteractionEnabled="NO" alpha="0.5" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pond" translatesAutoresizingMaskIntoConstraints="NO" id="Fp6-R7-9FO">
+                            <imageView contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="pond" translatesAutoresizingMaskIntoConstraints="NO" id="Fp6-R7-9FO">
                                 <rect key="frame" x="0.0" y="20" width="375" height="647"/>
                             </imageView>
                         </subviews>
@@ -33,6 +33,9 @@
                             <constraint firstAttribute="trailing" secondItem="Fp6-R7-9FO" secondAttribute="trailing" id="Xxm-3E-GgB"/>
                         </constraints>
                     </view>
+                    <connections>
+                        <outlet property="pond" destination="Fp6-R7-9FO" id="X1i-CX-l6Q"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

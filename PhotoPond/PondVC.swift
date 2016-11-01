@@ -33,6 +33,8 @@ class LilyView : UIImageView {
 }
 
 class PondVC : UIViewController {
+    @IBOutlet var pond : UIImageView?
+    
     let collider = UICollisionBehavior()
     let gravity = UIGravityBehavior()
     let dynamic = UIDynamicItemBehavior()
@@ -41,7 +43,7 @@ class PondVC : UIViewController {
     var previewing = false
     
     override func viewDidLoad() {
-        let animator = UIDynamicAnimator(referenceView: view)
+        let animator = UIDynamicAnimator(referenceView: pond!)
         animator.addBehavior(collider)
         collider.translatesReferenceBoundsIntoBoundary = true
         
@@ -115,7 +117,7 @@ class PondVC : UIViewController {
         let randy = Int(arc4random_uniform(UInt32(self.view.frame.size.height-CGFloat(size)))+UInt32(size/2))
         lily.center = CGPoint(x: randx, y: randy)
         lily.isUserInteractionEnabled = true
-        self.view.addSubview(lily)
+        pond!.addSubview(lily)
         collider.addItem(lily)
         dynamic.addItem(lily)
         let randvx = Int(arc4random_uniform(30))-15
